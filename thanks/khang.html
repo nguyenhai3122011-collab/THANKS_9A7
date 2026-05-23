@@ -37,7 +37,7 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* Container chính với hiệu ứng Glassmorphism */
+        /* Container chính Glassmorphism */
         .container {
             background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(10px);
@@ -48,17 +48,16 @@
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
             width: 100%;
             max-width: 500px;
-            min-height: 320px;
+            min-height: 300px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
             transition: all 0.5s ease;
-            position: relative;
         }
 
-        /* Ẩn các trang mặc định */
+        /* Cấu trúc các trang */
         .page {
             display: none;
             width: 100%;
@@ -74,7 +73,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Tiêu đề và Văn bản */
         h2 {
             color: var(--primary-color);
             margin-bottom: 20px;
@@ -88,10 +86,10 @@
             font-weight: 500;
             min-height: 60px;
             margin-bottom: 25px;
-            white-space: pre-line; /* Giữ hàng cho xuống dòng */
+            white-space: pre-line;
         }
 
-        /* Cấu hình nhấp nháy con trỏ chuột khi đánh máy */
+        /* Con trỏ đánh máy */
         .cursor {
             display: inline-block;
             width: 3px;
@@ -105,13 +103,13 @@
             50% { opacity: 1; }
         }
 
-        /* Form nhập mã & phản hồi */
+        /* Ô nhập mã */
         .input-group {
             width: 100%;
             margin-bottom: 20px;
         }
 
-        input, textarea {
+        input {
             width: 100%;
             padding: 14px 20px;
             border: 2px solid #dfe6e9;
@@ -119,20 +117,16 @@
             font-size: 16px;
             outline: none;
             transition: all 0.3s;
+            text-align: center;
             background: rgba(255, 255, 255, 0.9);
         }
 
-        input:focus, textarea:focus {
+        input:focus {
             border-color: var(--primary-color);
             box-shadow: 0 0 10px rgba(108, 92, 231, 0.2);
         }
 
-        textarea {
-            resize: none;
-            height: 100px;
-        }
-
-        /* Nút bấm thiết kế mượt */
+        /* Nút bấm mượt mà */
         button {
             padding: 12px 28px;
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
@@ -158,13 +152,6 @@
             transform: translateY(1px);
         }
 
-        button:disabled {
-            background: #b2bec3;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
         .error-msg {
             color: #d63031;
             font-size: 14px;
@@ -173,13 +160,14 @@
             font-weight: 500;
         }
 
-        /* Trang cuối cùng thành công */
-        .success-content {
-            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        /* Trang kết thúc */
+        .success-box {
+            display: none;
+            animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
 
         @keyframes popIn {
-            0% { transform: scale(0.7); opacity: 0; }
+            0% { transform: scale(0.6); opacity: 0; }
             100% { transform: scale(1); opacity: 1; }
         }
     </style>
@@ -188,6 +176,7 @@
 
     <div class="container">
         
+        <!-- TRANG NHẬP MÃ BẢO MẬT -->
         <div id="page-auth" class="page active">
             <h2>Mã xác nhận 🔑</h2>
             <p style="margin-bottom: 20px; color: #636e72;">Vui lòng nhập mã để mở món quà bí mật từ bạn của cậu.</p>
@@ -198,58 +187,46 @@
             <button onclick="verifyCode()">Mở quà 🎁</button>
         </div>
 
+        <!-- TRANG 1 -->
         <div id="page-1" class="page">
             <h2>Gửi Khang 👋</h2>
             <div class="typewriter-text" id="text-1"></div>
             <button onclick="nextPage(2)" id="btn-1" style="display: none;">Tiếp theo ✨</button>
         </div>
 
+        <!-- TRANG 2 -->
         <div id="page-2" class="page">
             <h2>Gửi Khang ❤️</h2>
             <div class="typewriter-text" id="text-2"></div>
             <button onclick="nextPage(3)" id="btn-2" style="display: none;">Tiếp theo ✨</button>
         </div>
 
+        <!-- TRANG 3 -->
         <div id="page-3" class="page">
             <h2>Gửi Khang 🌸</h2>
             <div class="typewriter-text" id="text-3"></div>
-            <button onclick="nextPage(4)" id="btn-3" style="display: none;">Tiếp theo ✨</button>
+            <button onclick="showSuccess()" id="btn-3" style="display: none;">Xong 🚀</button>
         </div>
 
-        <div id="page-4" class="page">
-            <h2>Gửi Khang 💭</h2>
-            <div class="typewriter-text" id="text-4"></div>
-            
-            <div id="feedback-form" style="display: none; width: 100%; animation: fadeIn 0.5s forwards;">
-                <div class="input-group">
-                    <textarea id="feedback-input" placeholder="Nhập suy nghĩ của cậu vào đây nhé..."></textarea>
-                </div>
-                <button id="send-btn" onclick="sendFeedback()">Xong 🚀</button>
-            </div>
-
-            <div id="success-box" class="success-content" style="display: none; margin-top: 20px;">
-                <h1 style="color: #2ed573; font-size: 28px;">Cảm ơn cậu! 🥰</h1>
-            </div>
+        <!-- MÀN HÌNH CẢM ƠN CUỐI CÙNG -->
+        <div id="page-success" class="success-box">
+            <h1 style="color: #6c5ce7; font-size: 32px; margin-bottom: 10px;">Cảm ơn cậu! 🥰</h1>
+            <p style="color: #636e72; font-size: 16px;">Chúc tình bạn của chúng ta luôn bền chặt nhé! 🎉✨</p>
         </div>
 
     </div>
 
     <script>
-        // URL WEB APP APPS SCRIPT CỦA BẠN (Thay link của bạn vào đây nếu cần)
-        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzeGzV3GiLP-sdWi3HRepwlxyZF1FVWgEZTzqavOAgSBLRaHtfYfHblmImH88GGTLzp/exec";
-        
-        // Mã bảo mật chính xác
         const CORRECT_CODE = "626573746672";
 
-        // Nội dung văn bản các trang kèm Emoji tương ứng ở cuối
+        // Nội dung văn bản đi kèm Emoji ở cuối câu như yêu cầu
         const contentPages = {
             1: "Món quà này là gửi cho người bạn học cùng lớp 9 năm 🎓🎒",
             2: "Cảm ơn cậu đã luôn đồng hành cùng mình trên cả chặng đường học tập, cảm ơn vì những lần cậu chỉ bài cho tớ. Cảm ơn cậu vì những mẹo hay khi làm bài 📚✍️",
-            3: "Món quà dành tặng cho cậu. Hy vọng rằng chúng ta sẽ tiếp tục làm bạn với nhau nhé! 🌟🤝",
-            4: "Cho mình biết bạn nghĩ sao về mình 🤔💬"
+            3: "Món quà dành tặng cho cậu. Hy vọng rằng chúng ta sẽ tiếp tục làm bạn với nhau nhé! 🌟🤝"
         };
 
-        // Hàm kiểm tra mã bảo mật ban đầu
+        // Kiểm tra mã bảo mật
         function verifyCode() {
             const codeInput = document.getElementById("secret-code").value.trim();
             const errorMsg = document.getElementById("auth-error");
@@ -263,44 +240,35 @@
             }
         }
 
-        // Thêm tính năng nhấn Enter để đăng nhập
+        // Hỗ trợ nhấn nút Enter để đăng nhập nhanh
         document.getElementById("secret-code").addEventListener("keyup", function(event) {
             if (event.key === "Enter") {
                 verifyCode();
             }
         });
 
-        // Hàm chuyển trang điều khiển hiệu ứng
+        // Chuyển trang và kích hoạt hiệu ứng đánh máy
         function nextPage(pageNum) {
-            // Ẩn tất cả các trang
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             
-            // Hiển thị trang hiện tại
             const currentPage = document.getElementById(`page-${pageNum}`);
             currentPage.classList.add('active');
 
-            // Bắt đầu chạy hiệu ứng đánh máy cho trang đó
             typeWriter(contentPages[pageNum], `text-${pageNum}`, () => {
-                // Sau khi đánh chữ xong thì hiển thị Nút tiếp theo hoặc Ô nhập liệu công việc tương ứng
-                if (pageNum === 4) {
-                    document.getElementById("feedback-form").style.display = "block";
-                } else {
-                    document.getElementById(`btn-${pageNum}`).style.display = "inline-flex";
-                }
+                document.getElementById(`btn-${pageNum}`).style.display = "inline-flex";
             });
         }
 
-        // Hàm xử lý hiệu ứng đánh chữ mượt mà
+        // Tạo hiệu ứng đánh chữ mượt mà
         function typeWriter(text, elementId, callback) {
             const element = document.getElementById(elementId);
-            element.innerHTML = '<span class="cursor"></span>'; // Tạo con trỏ
+            element.innerHTML = '<span class="cursor"></span>'; 
             
             let i = 0;
-            const speed = 45; // Tốc độ đánh chữ (ms/ký tự)
+            const speed = 45; // Tốc độ chạy chữ (ms)
 
             function type() {
                 if (i < text.length) {
-                    // Chèn chữ vào trước thanh con trỏ
                     element.innerHTML = text.substring(0, i + 1) + '<span class="cursor"></span>';
                     i++;
                     setTimeout(type, speed);
@@ -311,45 +279,10 @@
             type();
         }
 
-        // Hàm gửi phản hồi của Khang về Google Sheet của bạn
-        async function sendFeedback() {
-            const feedbackInput = document.getElementById("feedback-input");
-            const sendBtn = document.getElementById("send-btn");
-            const feedbackText = feedbackInput.value.trim();
-
-            if (!feedbackText) {
-                alert("Cậu nhập gì đó trước khi bấm Xong nha! 😉");
-                return;
-            }
-
-            // Khóa nút để tránh spam click liên tục
-            sendBtn.disabled = true;
-            sendBtn.innerText = "Đang gửi... ⏳";
-
-            try {
-                // Gửi dữ liệu dưới dạng POST lên Google Sheet API của bạn
-                await fetch(WEB_APP_URL, {
-                    method: "POST",
-                    mode: "no-cors", 
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({ 
-                        name: "Khang", 
-                        message: feedbackText 
-                    })
-                });
-
-                // Hiển thị hiệu ứng thành công "Cảm ơn cậu!"
-                document.getElementById("feedback-form").style.display = "none";
-                document.getElementById("success-box").style.display = "block";
-
-            } catch (error) {
-                alert("Có lỗi nhỏ xảy ra khi gửi tin, cậu thử lại giúp tớ nhé!");
-                sendBtn.disabled = false;
-                sendBtn.innerText = "Xong 🚀";
-                console.error(error);
-            }
+        // Hiển thị màn hình "Cảm ơn cậu!" cuối cùng
+        function showSuccess() {
+            document.getElementById("page-3").classList.remove("active");
+            document.getElementById("page-success").style.display = "block";
         }
     </script>
 </body>
