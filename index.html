@@ -65,7 +65,7 @@
 
 <div class="container">
     <h2>Nhập tên file để tiếp tục</h2>
-    <input type="text" id="fileNameInput" placeholder="Ví dụ: tailieu (không cần .html)" onkeydown="if(event.key === 'Enter') checkAndRedirect()">
+    <input type="text" id="fileNameInput" placeholder="Ví dụ: tailieu.html" onkeydown="if(event.key === 'Enter') checkAndRedirect()">
     <br>
     <button onclick="checkAndRedirect()">Mở file</button>
     <div id="error" class="error-message">Vui lòng nhập tên file!</div>
@@ -118,7 +118,7 @@
         if (validFiles.includes(input)) {
             errorDiv.style.display = "none";
             // Chuyển hướng đến file .html tương ứng trong thư mục thanks
-            window.location.href = input + ".html";
+            window.location.href = input;
         } else {
             errorDiv.textContent = "Tên file không đúng hoặc không tồn tại!";
             errorDiv.style.display = "block";
