@@ -65,7 +65,7 @@
 
 <div class="container">
     <h2>Nhập tên file để tiếp tục</h2>
-    <input type="text" id="fileNameInput" placeholder="Ví dụ: tailieu.html" onkeydown="if(event.key === 'Enter') checkAndRedirect()">
+    <input type="text" id="fileNameInput" placeholder="Ví dụ: test (không cần .html)" onkeydown="if(event.key === 'Enter') checkAndRedirect()">
     <br>
     <button onclick="checkAndRedirect()">Mở file</button>
     <div id="error" class="error-message">Vui lòng nhập tên file!</div>
@@ -73,14 +73,12 @@
 </div>
 
 <script>
-    // Mảng chứa danh sách file hợp lệ, sẽ được lấy từ file list.txt
     let validFiles = [];
 
-    // Hàm tự động chạy khi trang web được tải để đọc file list.txt
+    // Tự động tải danh sách file từ list.txt ở thư mục gốc
     window.onload = function() {
         const statusDiv = document.getElementById('status');
         
-        // Sử dụng fetch để đọc file list.txt cùng cấp với index.html
         fetch('list.txt')
             .then(response => {
                 if (!response.ok) {
@@ -89,18 +87,15 @@
                 return response.text();
             })
             .then(data => {
-                // Tách dữ liệu theo dấu xuống dòng (\n hoặc \r\n)
-                // Đồng thời xóa khoảng trắng dư thừa và loại bỏ các dòng trống
                 validFiles = data.split(/\r?\n/)
                                  .map(line => line.trim())
                                  .filter(line => line !== "");
                 
                 statusDiv.textContent = "Hệ thống đã sẵn sàng.";
-                console.log("Danh sách file hợp lệ đã tải:", validFiles);
             })
             .catch(error => {
-                statusDiv.textContent = "Lỗi: Không thể cấu hình danh sách file bảo mật.";
-                console.error("Lỗi fetch list.txt:", error);
+                statusDiv.textContent = "Lỗi: Không thể cấu hình danh sách file.";
+                console.error(error);
             });
     };
 
@@ -114,11 +109,10 @@
             return;
         }
 
-        // Kiểm tra xem tên nhập vào có khớp với dòng nào trong list.txt không
         if (validFiles.includes(input)) {
             errorDiv.style.display = "none";
-            // Chuyển hướng đến file .html tương ứng trong thư mục thanks
-            window.location.href = input;
+            // THAY ĐỔI Ở ĐÂY: Thêm "thanks/" vào trước để chuyển hướng vào trong thư mục thanks
+            window.location.href = "thanks/" + input;
         } else {
             errorDiv.textContent = "Tên file không đúng hoặc không tồn tại!";
             errorDiv.style.display = "block";
