@@ -37,7 +37,7 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* Container chính Glassmorphism */
+        /* Container chính với hiệu ứng Glassmorphism */
         .container {
             background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(10px);
@@ -48,16 +48,17 @@
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
             width: 100%;
             max-width: 500px;
-            min-height: 300px;
+            min-height: 320px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
             transition: all 0.5s ease;
+            position: relative;
         }
 
-        /* Cấu trúc các trang */
+        /* Ẩn các trang mặc định */
         .page {
             display: none;
             width: 100%;
@@ -73,6 +74,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* Tiêu đề và Văn bản */
         h2 {
             color: var(--primary-color);
             margin-bottom: 20px;
@@ -89,7 +91,7 @@
             white-space: pre-line;
         }
 
-        /* Con trỏ đánh máy */
+        /* Hiệu ứng nhấp nháy con trỏ chuột khi đánh máy */
         .cursor {
             display: inline-block;
             width: 3px;
@@ -103,13 +105,13 @@
             50% { opacity: 1; }
         }
 
-        /* Ô nhập mã */
+        /* Cấu trúc Form */
         .input-group {
             width: 100%;
             margin-bottom: 20px;
         }
 
-        input {
+        input, textarea {
             width: 100%;
             padding: 14px 20px;
             border: 2px solid #dfe6e9;
@@ -117,16 +119,20 @@
             font-size: 16px;
             outline: none;
             transition: all 0.3s;
-            text-align: center;
             background: rgba(255, 255, 255, 0.9);
         }
 
-        input:focus {
+        input:focus, textarea:focus {
             border-color: var(--primary-color);
             box-shadow: 0 0 10px rgba(108, 92, 231, 0.2);
         }
 
-        /* Nút bấm mượt mà */
+        textarea {
+            resize: none;
+            height: 110px;
+        }
+
+        /* Nút bấm thiết kế mượt */
         button {
             padding: 12px 28px;
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
@@ -152,6 +158,13 @@
             transform: translateY(1px);
         }
 
+        button:disabled {
+            background: #b2bec3;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
         .error-msg {
             color: #d63031;
             font-size: 14px;
@@ -160,14 +173,14 @@
             font-weight: 500;
         }
 
-        /* Trang kết thúc */
-        .success-box {
+        /* Trang cuối cùng thành công */
+        .success-content {
             display: none;
-            animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
 
         @keyframes popIn {
-            0% { transform: scale(0.6); opacity: 0; }
+            0% { transform: scale(0.7); opacity: 0; }
             100% { transform: scale(1); opacity: 1; }
         }
     </style>
@@ -205,13 +218,32 @@
         <div id="page-3" class="page">
             <h2>Gửi Khang 🌸</h2>
             <div class="typewriter-text" id="text-3"></div>
-            <button onclick="showSuccess()" id="btn-3" style="display: none;">Xong 🚀</button>
+            <button onclick="nextPage(4)" id="btn-3" style="display: none;">Tiếp theo ✨</button>
         </div>
 
-        <!-- MÀN HÌNH CẢM ƠN CUỐI CÙNG -->
-        <div id="page-success" class="success-box">
+        <!-- TRANG 4: NHẬP CẢM NHẬN (SỬ DỤNG WEB3FORMS) -->
+        <div id="page-4" class="page">
+            <h2>Gửi Khang 💭</h2>
+            <div class="typewriter-text" id="text-4"></div>
+            
+            <!-- Form gửi dữ liệu ngầm không reload trang -->
+            <form id="web3forms-form" onsubmit="submitForm(event)">
+                <!-- Access Key từ code mẫu của bạn -->
+                <input type="hidden" name="access_key" value="583ce542-0889-45bf-9d44-2b18a4127614">
+                <!-- Tên mặc định để bạn biết đây là tin nhắn từ Khang -->
+                <input type="hidden" name="from_name" value="Khang (Bạn học 9 năm)">
+                
+                <div class="input-group">
+                    <textarea name="message" id="feedback-input" placeholder="Nhập nội dung lời nhắn tại đây..." required></textarea>
+                </div>
+                <button type="submit" id="send-btn">Xong 🚀</button>
+            </form>
+        </div>
+
+        <!-- TRANG KẾT THÚC CẢM ƠN -->
+        <div id="page-success" class="success-content">
             <h1 style="color: #6c5ce7; font-size: 32px; margin-bottom: 10px;">Cảm ơn cậu! 🥰</h1>
-            <p style="color: #636e72; font-size: 16px;">Chúc tình bạn của chúng ta luôn bền chặt nhé! 🎉✨</p>
+            <p style="color: #636e72; font-size: 16px;">Lời nhắn của cậu đã được gửi đi thành công rồi đấy! 🤝🌟</p>
         </div>
 
     </div>
@@ -219,14 +251,15 @@
     <script>
         const CORRECT_CODE = "626573746672";
 
-        // Nội dung văn bản đi kèm Emoji ở cuối câu như yêu cầu
+        // Văn bản đi kèm Emoji phù hợp cuối chuỗi
         const contentPages = {
             1: "Món quà này là gửi cho người bạn học cùng lớp 9 năm 🎓🎒",
-            2: "Cảm ơn cậu đã luôn đồng hành cùng tớ trên cả chặng đường học tập, cảm ơn vì những lần cậu chỉ bài cho tớ. Cảm ơn cậu vì những mẹo hay khi làm bài 📚✍️",
-            3: "Món quà dành tặng cho cậu. Hy vọng rằng chúng ta sẽ tiếp tục làm bạn với nhau nhé! 🌟🤝"
+            2: "Cảm ơn cậu đã luôn đồng hành cùng mình trên cả chặng đường học tập, cảm ơn vì những lần cậu chỉ bài cho tớ. Cảm ơn cậu vì những mẹo hay khi làm bài 📚✍️",
+            3: "Món quà dành tặng cho cậu. Hy vọng rằng chúng ta sẽ tiếp tục làm bạn với nhau nhé! 🌟🤝",
+            4: "Cho mình biết bạn nghĩ sao về mình 🤔💬"
         };
 
-        // Kiểm tra mã bảo mật
+        // Xác thực mã bảo mật đầu trang
         function verifyCode() {
             const codeInput = document.getElementById("secret-code").value.trim();
             const errorMsg = document.getElementById("auth-error");
@@ -240,14 +273,14 @@
             }
         }
 
-        // Hỗ trợ nhấn nút Enter để đăng nhập nhanh
+        // Nhấn Enter để xác nhận mã nhanh
         document.getElementById("secret-code").addEventListener("keyup", function(event) {
             if (event.key === "Enter") {
                 verifyCode();
             }
         });
 
-        // Chuyển trang và kích hoạt hiệu ứng đánh máy
+        // Chuyển trang và kích hoạt hiệu ứng gõ chữ
         function nextPage(pageNum) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             
@@ -255,17 +288,27 @@
             currentPage.classList.add('active');
 
             typeWriter(contentPages[pageNum], `text-${pageNum}`, () => {
-                document.getElementById(`btn-${pageNum}`).style.display = "inline-flex";
+                if (pageNum === 4) {
+                    document.getElementById("web3forms-form").style.opacity = "0";
+                    document.getElementById("web3forms-form").style.display = "block";
+                    // Hiệu ứng fade in nhẹ cho form sau khi gõ xong chữ
+                    setTimeout(() => {
+                        document.getElementById("web3forms-form").style.transition = "opacity 0.5s";
+                        document.getElementById("web3forms-form").style.opacity = "1";
+                    }, 50);
+                } else {
+                    document.getElementById(`btn-${pageNum}`).style.display = "inline-flex";
+                }
             });
         }
 
-        // Tạo hiệu ứng đánh chữ mượt mà
+        // Hàm xử lý hiệu ứng gõ chữ
         function typeWriter(text, elementId, callback) {
             const element = document.getElementById(elementId);
             element.innerHTML = '<span class="cursor"></span>'; 
             
             let i = 0;
-            const speed = 45; // Tốc độ chạy chữ (ms)
+            const speed = 45; 
 
             function type() {
                 if (i < text.length) {
@@ -279,10 +322,39 @@
             type();
         }
 
-        // Hiển thị màn hình "Cảm ơn cậu!" cuối cùng
-        function showSuccess() {
-            document.getElementById("page-3").classList.remove("active");
-            document.getElementById("page-success").style.display = "block";
+        // Xử lý gửi Form bằng AJAX để tránh reload trang mất mượt
+        async function submitForm(event) {
+            event.preventDefault(); // Chặn hành vi tải lại trang mặc định của thẻ form
+            
+            const form = document.getElementById("web3forms-form");
+            const sendBtn = document.getElementById("send-btn");
+            const formData = new FormData(form);
+
+            // Chuyển trạng thái nút bấm
+            sendBtn.disabled = true;
+            sendBtn.innerText = "... ⏳";
+
+            try {
+                const response = await fetch("https://api.web3forms.com/submit", {
+                    method: "POST",
+                    body: formData
+                });
+
+                if (response.ok) {
+                    // Ẩn trang 4 và hiện màn hình Cảm ơn cậu!
+                    document.getElementById("page-4").classList.remove("active");
+                    document.getElementById("page-success").style.display = "block";
+                } else {
+                    alert("Có lỗi xảy ra khi gửi tin nhắn, cậu thử lại nhé!");
+                    sendBtn.disabled = false;
+                    sendBtn.innerText = "Xong 🚀";
+                }
+            } catch (error) {
+                alert("Không thể kết nối Internet để gửi lời nhắn!");
+                sendBtn.disabled = false;
+                sendBtn.innerText = "Xong 🚀";
+                console.error(error);
+            }
         }
     </script>
 </body>
