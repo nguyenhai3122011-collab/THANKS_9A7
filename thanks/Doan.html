@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gửi Bạn Bạn Của Tớ ✨</title>
+    <style>
+        :root {
+            --primary-color: #ff7675;
+            --secondary-color: #e84393;
+            --bg-gradient: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);
+            --text-color: #2d3436;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            background-size: 400% 400%;
+            animation: gradientBg 15s ease infinite;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        @keyframes gradientBg {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Container kính mờ Glassmorphism */
+        .container {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            padding: 40px 30px;
+            border-radius: 24px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            min-height: 280px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            transition: all 0.5s ease;
+        }
+
+        .page {
+            display: none;
+            width: 100%;
+            animation: fadeIn 0.6s ease forwards;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .typewriter-text {
+            font-size: 18px;
+            line-height: 1.6;
+            color: var(--text-color);
+            font-weight: 500;
+            min-height: 60px;
+            margin-bottom: 25px;
+            white-space: pre-line;
+        }
+
+        /* Con trỏ đánh máy nhấp nháy */
+        .cursor {
+            display: inline-block;
+            width: 3px;
+            background-color: var(--primary-color);
+            animation: blink 0.7s infinite;
+            margin-left: 3px;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+
+        button {
+            padding: 12px 28px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(232, 67, 147, 0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(232, 67, 147, 0.4);
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        .success-box {
+            display: none;
+            animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.6); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <!-- TRANG 1: HIỆU ỨNG ĐÁNH CHỮ -->
+        <div id="page-1" class="page active">
+            <h2>Gửi Mày 👋</h2>
+            <div class="typewriter-text" id="text-1"></div>
+            <button onclick="showSuccess()" id="btn-1" style="display: none;">Xong 🚀</button>
+        </div>
+
+        <!-- MÀN HÌNH KẾT THÚC CẢM ƠN -->
+        <div id="page-success" class="success-box">
+            <h1 style="color: #e84393; font-size: 32px; margin-bottom: 10px;">Cảm ơn vi daden! 🥰</h1>
+            <p style="color: #636e72; font-size: 16px;">Chúc mọi điều may mắn nhất sẽ đến! 🍀✨</p>
+        </div>
+
+    </div>
+
+    <script>
+        // Nội dung văn bản chạy hiệu ứng đánh chữ kèm emoji kỷ niệm ở cuối
+        const messageText = "Tặng m món quà coi như là một điều gì đó may mắn, dù sau này có khác trường thì hãy nhớ chúng ta đã từng là bạn! 🎁🍀🎓";
+
+        // Tự động chạy hiệu ứng gõ chữ ngay khi mở trang
+        window.onload = function() {
+            typeWriter(messageText, "text-1", () => {
+                document.getElementById("btn-1").style.display = "inline-flex";
+            });
+        };
+
+        // Hàm xử lý hiệu ứng đánh chữ mượt mà
+        function typeWriter(text, elementId, callback) {
+            const element = document.getElementById(elementId);
+            element.innerHTML = '<span class="cursor"></span>'; 
+            
+            let i = 0;
+            const speed = 45; // Tốc độ chạy chữ (ms)
+
+            function type() {
+                if (i < text.length) {
+                    element.innerHTML = text.substring(0, i + 1) + '<span class="cursor"></span>';
+                    i++;
+                    setTimeout(type, speed);
+                } else {
+                    if (callback) callback();
+                }
+            }
+            type();
+        }
+
+        // Chuyển sang màn hình cảm ơn cuối cùng
+        function showSuccess() {
+            document.getElementById("page-1").classList.remove("active");
+            document.getElementById("page-success").style.display = "block";
+        }
+    </script>
+</body>
+</html>
