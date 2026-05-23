@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gửi Tuệ Khanh ✨</title>
+    <style>
+        :root {
+            --primary-color: #fd79a8;
+            --secondary-color: #a29bfe;
+            --bg-gradient: linear-gradient(135deg, #fef1f2 0%, #e0e7ff 100%);
+            --text-color: #2d3436;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            background-size: 400% 400%;
+            animation: gradientBg 15s ease infinite;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        @keyframes gradientBg {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Container kính mờ Glassmorphism */
+        .container {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            padding: 40px 30px;
+            border-radius: 24px;
+            box-shadow: 0 15px 35px rgba(253, 121, 168, 0.15);
+            width: 100%;
+            max-width: 500px;
+            min-height: 340px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            transition: all 0.5s ease;
+            position: relative;
+        }
+
+        .page {
+            display: none;
+            width: 100%;
+            animation: fadeIn 0.6s ease forwards;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .typewriter-text {
+            font-size: 18px;
+            line-height: 1.6;
+            color: var(--text-color);
+            font-weight: 500;
+            min-height: 80px;
+            margin-bottom: 25px;
+            white-space: pre-line;
+            text-align: left;
+        }
+
+        .center-text {
+            text-align: center;
+        }
+
+        /* Con trỏ đánh máy nhấp nháy */
+        .cursor {
+            display: inline-block;
+            width: 3px;
+            background-color: var(--primary-color);
+            animation: blink 0.7s infinite;
+            margin-left: 3px;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+
+        .input-group {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 14px 20px;
+            border: 2px solid #dfe6e9;
+            border-radius: 12px;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        input:focus, textarea:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 10px rgba(253, 121, 168, 0.2);
+        }
+
+        textarea {
+            resize: none;
+            height: 110px;
+        }
+
+        button {
+            padding: 12px 28px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(253, 121, 168, 0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(253, 121, 168, 0.4);
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        button:disabled {
+            background: #b2bec3;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .error-msg {
+            color: #d63031;
+            font-size: 14px;
+            margin-top: 8px;
+            display: none;
+            font-weight: 500;
+        }
+
+        .success-content {
+            display: none;
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.7); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <!-- TRANG NHẬP MÃ BẢO MẬT -->
+        <div id="page-auth" class="page active">
+            <h2>Mã xác nhận 🔑</h2>
+            <p style="margin-bottom: 20px; color: #636e72;" class="center-text">Vui lòng nhập mã để mở món quà bí mật dành cho Tuệ Khanh.</p>
+            <div class="input-group">
+                <input type="password" id="secret-code" placeholder="Nhập mã vào đây..." autocomplete="off">
+                <div id="auth-error" class="error-msg center-text">Mã chưa đúng rồi bạn ơi! 😢</div>
+            </div>
+            <button onclick="verifyCode()">Mở quà 🎁</button>
+        </div>
+
+        <!-- TRANG 1 -->
+        <div id="page-1" class="page">
+            <h2>Gửi Tuệ Khanh 👋</h2>
+            <div class="typewriter-text" id="text-1"></div>
+            <div class="center-text">
+                <button onclick="nextPage(2)" id="btn-1" style="display: none;">Tiếp theo ✨</button>
+            </div>
+        </div>
+
+        <!-- TRANG 2: CẢM NHẬN & Ô NHẬP LỜI NHẮN -->
+        <div id="page-2" class="page">
+            <h2>Gửi Tuệ Khanh ❤️</h2>
+            <div class="typewriter-text center-text" id="text-2"></div>
+            
+            <!-- Form gửi dữ liệu ngầm lên Web3Forms -->
+            <form id="web3forms-form" style="display: none;">
+                <!-- Giữ nguyên Access Key của bạn -->
+                <input type="hidden" name="access_key" value="583ce542-0889-45bf-9d44-2b18a4127614">
+                <!-- Tên định danh nguồn gửi -->
+                <input type="hidden" name="from_name" value="Tuệ Khanh">
+                
+                <div class="input-group">
+                    <textarea name="message" id="feedback-input" placeholder="Nhập nội dung lời nhắn tại đây..." required></textarea>
+                </div>
+                <div class="center-text">
+                    <button type="submit" id="send-btn" onclick="submitForm(event)">Xong 🚀</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- TRANG KẾT THÚC CẢM ƠN -->
+        <div id="page-success" class="success-content">
+            <h1 style="color: #fd79a8; font-size: 32px; margin-bottom: 10px;">Cảm ơn cậu! 🥰</h1>
+            <p style="color: #636e72; font-size: 16px;">Lời nhắn của cậu đã được gửi đến tớ thành công rồi! ✨🤝</p>
+        </div>
+
+    </div>
+
+    <script>
+        // Mã bảo mật chính xác dành cho Tuệ Khanh
+        const CORRECT_CODE = "62657374";
+
+        // Nội dung văn bản từng trang (\n dùng để xuống dòng mượt mà)
+        const contentPages = {
+            1: "Gửi Tuệ Khanh,\nDo quá gấp nên không chuẩn bị đủ quà nên bạn thông cảm nhé! Hy vọng rằng tình bạn chúng ta kéo dài mãi mãi ! ⏳💖",
+            2: "Bạn nghĩ sao về mình nhỉ ???? 🤔💬"
+        };
+
+        // Hàm kiểm tra mã bảo mật
+        function verifyCode() {
+            const codeInput = document.getElementById("secret-code").value.trim();
+            const errorMsg = document.getElementById("auth-error");
+
+            if (codeInput === CORRECT_CODE) {
+                document.getElementById("page-auth").classList.remove("active");
+                nextPage(1);
+            } else {
+                errorMsg.style.display = "block";
+                document.getElementById("secret-code").focus();
+            }
+        }
+
+        // Nhấn Enter để gửi mã nhanh
+        document.getElementById("secret-code").addEventListener("keyup", function(event) {
+            if (event.key === "Enter") {
+                verifyCode();
+            }
+        });
+
+        // Điều khiển chuyển trang & chạy hiệu ứng
+        function nextPage(pageNum) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            
+            const currentPage = document.getElementById(`page-${pageNum}`);
+            currentPage.classList.add('active');
+
+            typeWriter(contentPages[pageNum], `text-${pageNum}`, () => {
+                if (pageNum === 2) {
+                    const form = document.getElementById("web3forms-form");
+                    form.style.opacity = "0";
+                    form.style.display = "block";
+                    setTimeout(() => {
+                        form.style.transition = "opacity 0.5s";
+                        form.style.opacity = "1";
+                    }, 50);
+                } else {
+                    document.getElementById(`btn-${pageNum}`).style.display = "inline-flex";
+                }
+            });
+        }
+
+        // Hàm xử lý hiệu ứng đánh chữ mượt mà
+        function typeWriter(text, elementId, callback) {
+            const element = document.getElementById(elementId);
+            element.innerHTML = '<span class="cursor"></span>'; 
+            
+            let i = 0;
+            const speed = 45; 
+
+            function type() {
+                if (i < text.length) {
+                    element.innerHTML = text.substring(0, i + 1) + '<span class="cursor"></span>';
+                    i++;
+                    setTimeout(type, speed);
+                } else {
+                    if (callback) callback();
+                }
+            }
+            type();
+        }
+
+        // Hàm xử lý gửi Form AJAX ngầm lên Web3Forms
+        async function submitForm(event) {
+            event.preventDefault(); 
+            
+            const form = document.getElementById("web3forms-form");
+            const sendBtn = document.getElementById("send-btn");
+            const feedbackInput = document.getElementById("feedback-input");
+
+            if (!feedbackInput.value.trim()) {
+                alert("Cậu viết vài dòng phản hồi trước khi bấm Xong nhé! 😉");
+                return;
+            }
+
+            const formData = new FormData(form);
+            sendBtn.disabled = true;
+            sendBtn.innerText = "... ⏳";
+
+            try {
+                const response = await fetch("https://api.web3forms.com/submit", {
+                    method: "POST",
+                    body: formData
+                });
+
+                if (response.ok) {
+                    document.getElementById("page-2").classList.remove("active");
+                    document.getElementById("page-success").style.display = "block";
+                } else {
+                    alert("Có lỗi nhỏ xảy ra khi gửi tin, Tuệ Khanh thử lại nhé!");
+                    sendBtn.disabled = false;
+                    sendBtn.innerText = "Xong 🚀";
+                }
+            } catch (error) {
+                alert("Không thể kết nối Internet để gửi lời nhắn!");
+                sendBtn.disabled = false;
+                sendBtn.innerText = "Xong 🚀";
+                console.error(error);
+            }
+        }
+    </script>
+</body>
+</html>
