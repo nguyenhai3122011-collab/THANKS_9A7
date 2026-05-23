@@ -1,1 +1,130 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xác thực truy cập</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+        h2 {
+            color: #333333;
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            width: 80%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .error-message {
+            color: red;
+            margin-top: 15px;
+            font-size: 14px;
+            display: none;
+        }
+        .status-message {
+            color: #666;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
 
+<div class="container">
+    <h2>Nhập tên file để tiếp tục</h2>
+    <input type="text" id="fileNameInput" placeholder="Ví dụ: tailieu (không cần .html)" onkeydown="if(event.key === 'Enter') checkAndRedirect()">
+    <br>
+    <button onclick="checkAndRedirect()">Mở file</button>
+    <div id="error" class="error-message">Vui lòng nhập tên file!</div>
+    <div id="status" class="status-message">Đang tải danh sách file...</div>
+</div>
+
+<script>
+    // Mảng chứa danh sách file hợp lệ, sẽ được lấy từ file list.txt
+    let validFiles = [];
+
+    // Hàm tự động chạy khi trang web được tải để đọc file list.txt
+    window.onload = function() {
+        const statusDiv = document.getElementById('status');
+        
+        // Sử dụng fetch để đọc file list.txt cùng cấp với index.html
+        fetch('list.txt')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Không thể tải file list.txt');
+                }
+                return response.text();
+            })
+            .then(data => {
+                // Tách dữ liệu theo dấu xuống dòng (\n hoặc \r\n)
+                // Đồng thời xóa khoảng trắng dư thừa và loại bỏ các dòng trống
+                validFiles = data.split(/\r?\n/)
+                                 .map(line => line.trim())
+                                 .filter(line => line !== "");
+                
+                statusDiv.textContent = "Hệ thống đã sẵn sàng.";
+                console.log("Danh sách file hợp lệ đã tải:", validFiles);
+            })
+            .catch(error => {
+                statusDiv.textContent = "Lỗi: Không thể cấu hình danh sách file bảo mật.";
+                console.error("Lỗi fetch list.txt:", error);
+            });
+    };
+
+    function checkAndRedirect() {
+        const input = document.getElementById('fileNameInput').value.trim();
+        const errorDiv = document.getElementById('error');
+
+        if (input === "") {
+            errorDiv.textContent = "Vui lòng nhập tên file!";
+            errorDiv.style.display = "block";
+            return;
+        }
+
+        // Kiểm tra xem tên nhập vào có khớp với dòng nào trong list.txt không
+        if (validFiles.includes(input)) {
+            errorDiv.style.display = "none";
+            // Chuyển hướng đến file .html tương ứng trong thư mục thanks
+            window.location.href = input + ".html";
+        } else {
+            errorDiv.textContent = "Tên file không đúng hoặc không tồn tại!";
+            errorDiv.style.display = "block";
+        }
+    }
+</script>
+
+</body>
+</html>
