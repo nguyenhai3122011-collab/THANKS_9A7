@@ -1,3 +1,7 @@
 test.html
 khang.html
 Chau.html
+GiaBao.html
+Doan.html
+Tien.html
+KDuong.html
