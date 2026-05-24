@@ -13,189 +13,342 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            background-color: #f4f7f6;
-            color: #333;
+            background-color: #f8fafc;
+            color: #334155;
             line-height: 1.6;
         }
 
         /* --- Trang chủ / Header --- */
         header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
             color: white;
             text-align: center;
-            padding: 100px 20px;
+            padding: 120px 20px;
             position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: url('https://www.transparenttextures.com/patterns/cubes.png');
+            opacity: 0.15;
         }
 
         header h1 {
-            font-size: 2.8rem;
-            margin-bottom: 15px;
+            font-size: 3.2rem;
+            margin-bottom: 20px;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
+            font-weight: 800;
+            text-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            animation: fadeInDown 1s ease;
         }
 
         header p {
-            font-size: 1.2rem;
-            opacity: 0.9;
+            font-size: 1.3rem;
+            opacity: 0.95;
             font-style: italic;
+            max-width: 600px;
+            margin: 0 auto;
+            animation: fadeInUp 1s ease;
+        }
+
+        /* --- Thanh Preview Lướt Nhanh (Timeline Navigation) --- */
+        .preview-nav {
+            position: fixed;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 15px 10px;
+            border-radius: 30px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            border: 1px solid rgba(255,255,255,0.6);
+        }
+
+        .preview-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: #fff;
+            border: 2px solid #e2e8f0;
+            color: #6366f1;
+            font-weight: bold;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .preview-btn:hover {
+            background: linear-gradient(135deg, #6366f1, #a855f7);
+            color: white;
+            border-color: transparent;
+            transform: scale(1.15);
+            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.4);
         }
 
         /* --- Bố cục Dòng thời gian (Timeline) --- */
         .container {
             max-width: 1000px;
-            margin: 50px auto;
+            margin: 80px auto;
             padding: 0 20px;
             position: relative;
         }
 
-        /* Đường thẳng chạy dọc ở giữa trên màn hình lớn */
+        /* Đường thẳng chạy dọc ở giữa */
         .container::after {
             content: '';
             position: absolute;
             width: 4px;
-            background-color: #764ba2;
+            background: linear-gradient(to bottom, #6366f1, #a855f7, #ec4899);
             top: 0;
             bottom: 0;
             left: 50%;
             margin-left: -2px;
             z-index: 1;
+            border-radius: 2px;
         }
 
         /* Hộp chứa từng năm học */
         .year-section {
-            padding: 10px 40px;
+            padding: 20px 40px;
             position: relative;
             background-color: inherit;
             width: 50%;
             z-index: 2;
+            scroll-margin-top: 40px; /* tạo khoảng trống khi click scroll tới */
         }
 
-        /* Định vị xen kẽ Trái / Phải */
-        .left {
-            left: 0;
-        }
-
-        .right {
-            left: 50%;
-        }
+        .left { left: 0; }
+        .right { left: 50%; }
 
         /* Dấu chấm tròn trên đường thẳng */
         .year-section::after {
             content: '';
             position: absolute;
-            width: 20px;
-            height: 20px;
-            right: -10px;
+            width: 22px;
+            height: 22px;
+            right: -11px;
             background-color: #fff;
-            border: 4px solid #667eea;
-            top: 15px;
+            border: 5px solid #a855f7;
+            top: 35px;
             border-radius: 50%;
             z-index: 3;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
 
-        .right::after {
-            left: -10px;
+        .right::after { left: -11px; }
+
+        .year-section:hover::after {
+            background-color: #ec4899;
+            transform: scale(1.2);
         }
 
         /* Khối nội dung chính của năm học */
         .content {
-            padding: 25px;
+            padding: 30px;
             background-color: white;
             position: relative;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            transition: transform 0.3s ease;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid #f1f5f9;
         }
 
         .content:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
         }
 
         .year-title {
-            color: #764ba2;
-            font-size: 1.8rem;
-            margin-bottom: 20px;
-            border-bottom: 2px solid #f0f0f0;
-            padding-bottom: 5px;
+            color: #5b21b6;
+            font-size: 2rem;
+            margin-bottom: 15px;
+            font-weight: 700;
             display: inline-block;
+            position: relative;
+        }
+
+        /* Lời chúc chân thành chung cho năm học */
+        .tribute-text {
+            font-size: 1.05rem;
+            color: #475569;
+            font-style: italic;
+            background: #f1f5f9;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #a855f7;
+        }
+
+        .instruction-tap {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
 
         /* --- Thẻ thông tin Giáo viên --- */
         .teachers-list {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 15px;
         }
 
         .teacher-card {
-            background: #fafafa;
-            border-left: 4px solid #667eea;
-            padding: 12px 15px;
-            border-radius: 0 8px 8px 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: all 0.2s ease;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            padding: 15px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            position: relative;
+            overflow: hidden;
         }
 
         .teacher-card:hover {
-            background: #f0f2ff;
-            border-left-color: #764ba2;
+            background: #fafafa;
+            border-color: #cbd5e1;
+            transform: scale(1.01);
+        }
+
+        /* Khi thẻ được kích hoạt mở lời cảm ơn */
+        .teacher-card.active {
+            border-color: #6366f1;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.15);
+        }
+
+        .teacher-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .teacher-info .name {
-            font-weight: bold;
-            font-size: 1.1rem;
-            color: #222;
+            font-weight: 700;
+            font-size: 1.15rem;
+            color: #1e293b;
+            transition: color 0.2s;
         }
 
-        .teacher-info .role {
-            font-size: 0.9rem;
-            color: #666;
+        .teacher-card:hover .name {
+            color: #6366f1;
         }
 
         /* Nhãn đánh dấu Giáo viên chủ nhiệm */
         .tag-gvcn {
-            background-color: #e53e3e;
+            background: linear-gradient(135deg, #ef4444, #f43f5e);
             color: white;
-            padding: 3px 8px;
-            font-size: 0.75rem;
-            font-weight: bold;
-            border-radius: 4px;
+            padding: 4px 10px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            border-radius: 20px;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 5px rgba(239, 68, 68, 0.3);
         }
 
-        /* Lời chúc chân thành */
-        .tribute-text {
-            margin-top: 15px;
+        /* Phần chứa Lời cảm ơn ẩn/hiện */
+        .teacher-thanks {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), margin-top 0.3s ease;
+            color: #475569;
             font-size: 0.95rem;
-            color: #555;
-            font-style: italic;
-            border-top: 1px dashed #ddd;
-            padding-top: 10px;
+            line-height: 1.6;
+        }
+
+        /* Khi active thì hiển thị lời cảm ơn */
+        .teacher-card.active .teacher-thanks {
+            max-height: 200px; /* Đủ không gian cho nội dung chữ */
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px dashed #e2e8f0;
+        }
+
+        /* Icon mũi tên chỉ trạng thái bấm */
+        .toggle-icon {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            transition: transform 0.3s ease;
+        }
+        .teacher-card.active .toggle-icon {
+            transform: rotate(180deg);
+            color: #6366f1;
         }
 
         /* --- Chân trang --- */
         footer {
-            background-color: #333;
-            color: white;
+            background-color: #0f172a;
+            color: #94a3b8;
             text-align: center;
-            padding: 30px 20px;
-            margin-top: 50px;
-            font-size: 0.9rem;
+            padding: 40px 20px;
+            margin-top: 80px;
+            font-size: 0.95rem;
+            border-top: 4px solid #a855f7;
+        }
+
+        footer p {
+            color: #f1f5f9;
+            margin-bottom: 5px;
+        }
+
+        /* Keyframes Animations */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* --- Giao diện Responsive cho điện thoại --- */
         @media screen and (max-width: 768px) {
+            header h1 { font-size: 2.2rem; }
+            header p { font-size: 1.1rem; }
+
+            .preview-nav {
+                right: 10px;
+                padding: 10px 6px;
+                gap: 10px;
+            }
+            .preview-btn {
+                width: 38px;
+                height: 38px;
+                font-size: 0.8rem;
+            }
+
             .container::after {
                 left: 31px;
             }
 
             .year-section {
                 width: 100%;
-                padding-left: 70px;
-                padding-right: 25px;
+                padding-left: 60px;
+                padding-right: 15px;
             }
 
             .year-section::after {
@@ -215,125 +368,224 @@
         <p>"Dưới ánh hoàng hôn, chuyến đò năm ấy vẫn vẹn nguyên giá trị..."</p>
     </header>
 
+    <div class="preview-nav">
+        <a href="#lop6" class="preview-btn" title="Lớp 6">6</a>
+        <a href="#lop7" class="preview-btn" title="Lớp 7">7</a>
+        <a href="#lop8" class="preview-btn" title="Lớp 8">8</a>
+        <a href="#lop9" class="preview-btn" title="Lớp 9">9</a>
+    </div>
+
     <div class="container">
 
-        <div class="year-section left">
+        <div class="year-section left" id="lop6">
             <div class="content">
-                <h2 class="year-title">Năm Học Lớp 6</h2>
-                <div class="teachers-list">
-                    <div class="teacher-card">
-                        <div class="teacher-info">
-                            <div class="name">Cô Lan</div>
-                            <div class="role">Môn: Ngữ văn</div>
-                        </div>
-                        <span class="tag-gvcn">GVCN</span>
-                    </div>
-                    <div class="teacher-card">
-                        <div class="teacher-info">
-                            <div class="name">Cô Nhi</div>
-                            <div class="role">Môn: Toán học</div>
-                        </div>
-                    </div>
-                    <div class="teacher-card">
-                        <div class="teacher-info">
-                            <div class="name">Cô Xoan</div>
-                            <div class="role">Môn: Tiếng Anh</div>
-                        </div>
-                    </div>
-                </div>
+                <h2 class="year-title">Lớp 6</h2>
                 <p class="tribute-text">Cảm ơn các cô đã dìu dắt chúng em trong năm đầu tiên bước chân vào ngôi trường mới còn đầy bỡ ngỡ.</p>
-            </div>
-        </div>
+                
+                <div class="instruction-tap">
+                    <span>👉 Ấn vào từng ô để xem lời tri ân</span>
+                </div>
 
-        <div class="year-section right">
-            <div class="content">
-                <h2 class="year-title">Năm Học Lớp 7</h2>
                 <div class="teachers-list">
-                    <div class="teacher-card">
-                        <div class="teacher-info">
-                            <div class="name">Cô Lan</div>
-                            <div class="role">Môn: Ngữ văn</div>
+                    <div class="teacher-card" onclick="toggleThanks(this)">
+                        <div class="teacher-header">
+                            <div class="teacher-info">
+                                <div class="name">Cô Lan</div>
+                            </div>
+                            <span class="tag-gvcn">GVCN</span>
                         </div>
-                        <span class="tag-gvcn">GVCN</span>
-                    </div>
-                    <div class="teacher-card">
-                        <div class="teacher-info">
-                            <div class="name">Cô Hằng</div>
-                            <div class="role">Môn: Toán học</div>
+                        <div class="teacher-thanks">
+                            <strong>Lời nhắn:</strong> Cảm ơn cô vì như là người mẹ dẫn dắt đàn con để có ngày hôm nay.
                         </div>
                     </div>
-                    <div class="teacher-card">
-                        <div class="teacher-info">
-                            <div class="name">Cô Xoan</div>
-                            <div class="role">Môn: Tiếng Anh</div>
+                    <div class="teacher-card" onclick="toggleThanks(this)">
+                        <div class="teacher-header">
+                            <div class="teacher-info">
+                                <div class="name">Cô Nhi</div>
+                            </div>
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="teacher-thanks">
+                            <strong>Lời nhắn:</strong> Cảm ơn cô vì đã biến những con số tẻ nhạt thành những bài học hữu ích.
+                        </div>
+                    </div>
+                    <div class="teacher-card" onclick="toggleThanks(this)">
+                        <div class="teacher-header">
+                            <div class="teacher-info">
+                                <div class="name">Cô Xoan</div>
+                            </div>
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="teacher-thanks">
+                            <strong>Lời nhắn:</strong> Cảm ơn cô vì những tiết dạy tiếng Anh hữu ích.
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <div class="year-section right" id="lop7">
+            <div class="content">
+                <h2 class="year-title">Lớp 7</h2>
                 <p class="tribute-text">Những bài học dần sâu sắc hơn, và sự tận tụy của các cô vẫn luôn là điểm tựa cho chúng em vững bước.</p>
-            </div>
-        </div>
+                
+                <div class="instruction-tap">
+                    <span>👉 Ấn vào từng ô để xem lời tri ân</span>
+                </div>
 
-        <div class="year-section left">
-            <div class="content">
-                <h2 class="year-title">Năm Học Lớp 8</h2>
                 <div class="teachers-list">
-                    <div class="teacher-card">
-                        <div class="teacher-info">
-                            <div class="name">Cô Lan</div>
-                            <div class="role">Môn: Ngữ văn</div>
+                    <div class="teacher-card" onclick="toggleThanks(this)">
+                        <div class="teacher-header">
+                            <div class="teacher-info">
+                                <div class="name">Cô Lan</div>
+                            </div>
+                            <span class="tag-gvcn">GVCN</span>
                         </div>
-                        <span class="tag-gvcn">GVCN</span>
-                    </div>
-                    <div class="teacher-card">
-                        <div class="teacher-info">
-                            <div class="name">Thầy Thanh</div>
-                            <div class="role">Môn: Toán học</div>
+                        <div class="teacher-thanks">
+                            <strong>Lời nhắn:</strong> Cảm ơn cô vì đã cho chúng em thấy được vẻ đẹp của văn chương, từ những con chữ nhỏ bé mà như cả giang sơn.
                         </div>
                     </div>
-                    <div class="teacher-card">
-                        <div class="teacher-info">
-                            <div class="name">Cô Quỳnh</div>
-                            <div class="role">Môn: Tiếng Anh</div>
+                    <div class="teacher-card" onclick="toggleThanks(this)">
+                        <div class="teacher-header">
+                            <div class="teacher-info">
+                                <div class="name">Cô Hằng</div>
+                            </div>
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="teacher-thanks">
+                            <strong>Lời nhắn:</strong> Cảm ơn cô vì đã tận tâm dạy bảo chúng em lên người.
+                        </div>
+                    </div>
+                    <div class="teacher-card" onclick="toggleThanks(this)">
+                        <div class="teacher-header">
+                            <div class="teacher-info">
+                                <div class="name">Cô Xoan</div>
+                            </div>
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="teacher-thanks">
+                            <strong>Lời nhắn:</strong> Những tiết học tiếng anh đã trở nên thú vị hơn qua tay cô.
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <div class="year-section left" id="lop8">
+            <div class="content">
+                <h2 class="year-title">Lớp 8</h2>
                 <p class="tribute-text">Năm học bản lề với nhiều kiến thức mới, cảm ơn thầy cô đã luôn kiên nhẫn và đồng hành cùng tập thể lớp.</p>
-            </div>
-        </div>
+                
+                <div class="instruction-tap">
+                    <span>👉 Ấn vào từng ô để xem lời tri ân</span>
+                </div>
 
-        <div class="year-section right">
-            <div class="content">
-                <h2 class="year-title">Năm Học Lớp 9</h2>
                 <div class="teachers-list">
-                    <div class="teacher-card">
-                        <div class="teacher-info">
-                            <div class="name">Cô Oanh</div>
-                            <div class="role">Môn: Tiếng Anh</div>
+                    <div class="teacher-card" onclick="toggleThanks(this)">
+                        <div class="teacher-header">
+                            <div class="teacher-info">
+                                <div class="name">Cô Lan</div>
+                            </div>
+                            <span class="tag-gvcn">GVCN</span>
                         </div>
-                        <span class="tag-gvcn">GVCN</span>
-                    </div>
-                    <div class="teacher-card">
-                        <div class="teacher-info">
-                            <div class="name">Thầy Thanh</div>
-                            <div class="role">Môn: Toán học</div>
+                        <div class="teacher-thanks">
+                            <strong>Lời nhắn:</strong> Cảm ơn cô đã dẫn dắt chúng em đến bây giờ !
                         </div>
                     </div>
-                    <div class="teacher-card">
-                        <div class="teacher-info">
-                            <div class="name">Cô Lan</div>
-                            <div class="role">Môn: Ngữ văn</div>
+                    <div class="teacher-card" onclick="toggleThanks(this)">
+                        <div class="teacher-header">
+                            <div class="teacher-info">
+                                <div class="name">Thầy Thanh</div>
+                            </div>
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="teacher-thanks">
+                            <strong>Lời nhắn:</strong> Cảm ơn thầy đã giúp chúng em hiểu ra giá trị thật của những con số, những buổi học hữu ích này chúng em sẽ nhớ mãi!
+                        </div>
+                    </div>
+                    <div class="teacher-card" onclick="toggleThanks(this)">
+                        <div class="teacher-header">
+                            <div class="teacher-info">
+                                <div class="name">Cô Quỳnh</div>
+                            </div>
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="teacher-thanks">
+                            <strong>Lời nhắn:</strong> Cảm ơn cô đã biết tiết học từ tẻ nhạt thành những tiết học sôi động hơn thông qua những trò chơi nhỏ và bài thuyết trình.
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <div class="year-section right" id="lop9">
+            <div class="content">
+                <h2 class="year-title">Lớp 9</h2>
                 <p class="tribute-text">Năm cuối cấp đầy thử thách và áp lực thi cử, sự ân cần của thầy cô chính là động lực lớn nhất để chúng em vượt vũ môn thành công.</p>
+                
+                <div class="instruction-tap">
+                    <span>👉 Ấn vào từng ô để xem lời tri ân</span>
+                </div>
+
+                <div class="teachers-list">
+                    <div class="teacher-card" onclick="toggleThanks(this)">
+                        <div class="teacher-header">
+                            <div class="teacher-info">
+                                <div class="name">Cô Oanh</div>
+                            </div>
+                            <span class="tag-gvcn">GVCN</span>
+                        </div>
+                        <div class="teacher-thanks">
+                            <strong>Lời nhắn:</strong> Cảm ơn cô đã dẫn dắt chúng em đến hết năm học cấp 2 và đối mặt với thử thách mới sau này.
+                        </div>
+                    </div>
+                    <div class="teacher-card" onclick="toggleThanks(this)">
+                        <div class="teacher-header">
+                            <div class="teacher-info">
+                                <div class="name">Thầy Thanh</div>
+                            </div>
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="teacher-thanks">
+                            <strong>Lời nhắn:</strong> Cảm ơn thầy đã giúp chúng em hiểu rằng lỗi sai không đáng sợ mà đáng sợ là không biết mình sai ở đâu, thầy là người truyền động lực cho chúng em bước tiếp trên chặng đương học tập.
+                        </div>
+                    </div>
+                    <div class="teacher-card" onclick="toggleThanks(this)">
+                        <div class="teacher-header">
+                            <div class="teacher-info">
+                                <div class="name">Cô Lan</div>
+                            </div>
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="teacher-thanks">
+                            <strong>Lời nhắn:</strong> Tuy cô không còn là giáo viên chủ nhiệm nhưng cô vẫn đồng hành cùng chúng em trong những năm cuối cấp này.
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
     </div>
 
     <footer>
-        <p>© 2026 - Trang web được thực hiện bởi tập thể học sinh gửi tới những người đưa đò kính yêu.</p>
+        <p>© 2026 Tập thể học sinh kính tặng thầy cô.</p>
+        <small>Trang tri ân dòng thời gian các mốc học tập cấp 2 ngọt ngào và trân trọng.</small>
     </footer>
 
+    <script>
+        function toggleThanks(card) {
+            // Kiểm tra xem thẻ hiện tại đã mở chưa
+            const isActive = card.classList.contains('active');
+            
+            // Tìm danh sách tất cả các thẻ trong cùng khối lớp để đóng lại nếu muốn hiệu ứng gọn gàng (tùy chọn)
+            // Ở đây cho phép mở nhiều thẻ cùng lúc để dễ đọc, nếu muốn đóng thẻ khác thì dùng vòng lặp xóa 'active'.
+
+            if (isActive) {
+                card.classList.remove('active');
+            } else {
+                card.classList.add('active');
+            }
+        }
+    </script>
 </body>
 </html>
