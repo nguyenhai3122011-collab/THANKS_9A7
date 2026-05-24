@@ -18,7 +18,7 @@
         }
 
         body {
-            background-color: #f8fafc; /* Màu nền tệp với màu lỗ đục cuộn phim */
+            background-color: #f8fafc;
             color: #334155;
             line-height: 1.6;
             overflow-x: hidden;
@@ -34,7 +34,7 @@
             overflow: hidden;
         }
 
-        /* Hiệu ứng hạt mờ trên header cho giống phim cũ */
+        /* Hiệu ứng hạt mờ trên header */
         header::before {
             content: '';
             position: absolute;
@@ -58,108 +58,6 @@
             font-style: italic;
             max-width: 600px;
             margin: 0 auto;
-        }
-
-        /* ========================================= */
-        /* --- THANH CUỘN PHIM PREVIEW BÊN PHẢI --- */
-        /* ========================================= */
-        .film-strip {
-            position: fixed;
-            right: 25px;
-            top: 50%;
-            transform: translateY(-50%);
-            background-color: #111; /* Màu đen của dải phim */
-            padding: 20px 25px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            z-index: 100;
-            box-shadow: -5px 10px 30px rgba(0,0,0,0.4);
-            border-radius: 4px;
-        }
-
-        /* Lỗ đục 2 bên của dải phim (Sprocket holes) */
-        .film-strip::before, .film-strip::after {
-            content: '';
-            position: absolute;
-            top: 0; bottom: 0;
-            width: 10px;
-            /* Lỗ thủng trùng màu với background body (#f8fafc) */
-            background-image: repeating-linear-gradient(
-                to bottom,
-                #f8fafc 0px,
-                #f8fafc 12px,
-                transparent 12px,
-                transparent 24px
-            );
-        }
-        .film-strip::before { left: 6px; }
-        .film-strip::after { right: 6px; }
-
-        /* Nút Phát (Play Video) */
-        .play-video-btn {
-            background: #ec4899;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            padding: 10px 5px;
-            font-weight: bold;
-            font-size: 0.8rem;
-            cursor: pointer;
-            text-transform: uppercase;
-            position: relative;
-            z-index: 2;
-            transition: 0.3s;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 5px;
-            box-shadow: 0 4px 10px rgba(236, 72, 153, 0.4);
-        }
-
-        .play-video-btn:hover {
-            background: #f43f5e;
-            transform: scale(1.05);
-        }
-
-        .play-icon {
-            font-size: 1.5rem;
-        }
-
-        /* Các ô khung hình (Frames) */
-        .film-frame {
-            width: 70px;
-            height: 50px;
-            background: url('https://www.transparenttextures.com/patterns/black-paper.png') #222;
-            border: 1px solid #444;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            color: #cbd5e1;
-            font-weight: 700;
-            font-size: 1rem;
-            position: relative;
-            z-index: 2;
-            transition: all 0.3s ease;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
-        }
-
-        .film-frame::before {
-            content: 'SCENE';
-            position: absolute;
-            top: 2px;
-            left: 2px;
-            font-size: 0.45rem;
-            color: #666;
-        }
-
-        .film-frame:hover {
-            background-color: #fcd34d;
-            color: #000;
-            border-color: #f59e0b;
-            transform: scale(1.1);
-            box-shadow: 0 0 15px rgba(252, 211, 77, 0.4);
         }
 
         /* --- Bố cục Dòng thời gian (Timeline) --- */
@@ -188,7 +86,6 @@
             background-color: inherit;
             width: 50%;
             z-index: 2;
-            scroll-margin-top: 15vh; /* Căn giữa màn hình khi scroll tới */
             transition: opacity 0.5s;
         }
 
@@ -251,7 +148,7 @@
             font-weight: bold;
         }
 
-        /* --- Thẻ thông tin Giáo viên (Giữ hiệu ứng mượt) --- */
+        /* --- Thẻ thông tin Giáo viên --- */
         .teachers-list {
             display: flex;
             flex-direction: column;
@@ -320,11 +217,6 @@
 
         /* Responsive Mobile */
         @media screen and (max-width: 768px) {
-            .film-strip {
-                right: 10px;
-                padding: 15px 15px;
-                transform: translateY(-50%) scale(0.85);
-            }
             .container::after { left: 30px; }
             .year-section { width: 100%; padding-left: 60px; padding-right: 15px; }
             .year-section::after { left: 20px; }
@@ -339,19 +231,9 @@
         <p>"Dưới ánh hoàng hôn, chuyến đò năm ấy vẫn vẹn nguyên giá trị..."</p>
     </header>
 
-    <div class="film-strip">
-        <button class="play-video-btn" onclick="playTimelineVideo()">
-            <span class="play-icon">▶</span>
-            Chạy
-        </button>
-        <a href="#lop6" class="film-frame">LỚP 6</a>
-        <a href="#lop7" class="film-frame">LỚP 7</a>
-        <a href="#lop8" class="film-frame">LỚP 8</a>
-        <a href="#lop9" class="film-frame">LỚP 9</a>
-    </div>
-
     <div class="container">
 
+        <!-- NĂM HỌC LỚP 6 -->
         <div class="year-section left" id="lop6">
             <div class="content">
                 <h2 class="year-title">Lớp 6</h2>
@@ -382,6 +264,7 @@
             </div>
         </div>
 
+        <!-- NĂM HỌC LỚP 7 -->
         <div class="year-section right" id="lop7">
             <div class="content">
                 <h2 class="year-title">Lớp 7</h2>
@@ -411,6 +294,7 @@
             </div>
         </div>
 
+        <!-- NĂM HỌC LỚP 8 -->
         <div class="year-section left" id="lop8">
             <div class="content">
                 <h2 class="year-title">Lớp 8</h2>
@@ -440,6 +324,7 @@
             </div>
         </div>
 
+        <!-- NĂM HỌC LỚP 9 -->
         <div class="year-section right" id="lop9">
             <div class="content">
                 <h2 class="year-title">Lớp 9</h2>
@@ -475,42 +360,11 @@
         <p>© 2026 Tập thể học sinh kính tặng thầy cô.</p>
     </footer>
 
+    <!-- LOGIC XỬ LÝ -->
     <script>
         // Mở/đóng lời cảm ơn
         function toggleThanks(card) {
             card.classList.toggle('active');
-        }
-
-        // Kịch bản chạy Video (Tua nhanh qua các mốc thời gian)
-        async function playTimelineVideo() {
-            const btn = document.querySelector('.play-video-btn');
-            btn.innerHTML = '⏳ Đang chiếu...';
-            btn.style.background = '#64748b'; // Đổi màu xám khi đang chạy
-            btn.style.pointerEvents = 'none';
-
-            const sections = ['lop6', 'lop7', 'lop8', 'lop9'];
-            
-            for (let i = 0; i < sections.length; i++) {
-                const targetId = sections[i];
-                const sectionEl = document.getElementById(targetId);
-                
-                // Cuộn mượt mà đến khối lớp
-                sectionEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                
-                // Tự động bật sáng (highlight) nhẹ để tăng cảm giác "đang chiếu tới"
-                sectionEl.style.transform = 'scale(1.02)';
-                
-                // Chờ 2.5 giây cho người xem đọc
-                await new Promise(resolve => setTimeout(resolve, 2500));
-                
-                // Trả lại kích thước bình thường
-                sectionEl.style.transform = 'scale(1)';
-            }
-
-            // Hoàn thành video
-            btn.innerHTML = '<span class="play-icon">▶</span> Chạy lại';
-            btn.style.background = '#ec4899';
-            btn.style.pointerEvents = 'auto';
         }
     </script>
 </body>
